@@ -102,19 +102,6 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    var resultLauncherCamera = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            val thumb = data!!.extras?.get("data") as Bitmap
-
-            thumb.let {
-                Glide.with(this)
-                    .load(it)
-                    .into(ivResult)
-            }
-        }
-    }
-
     private fun openCamera() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
@@ -133,6 +120,24 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    var resultLauncherCamera = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            val thumb = data!!.extras?.get("data") as Bitmap
+
+            thumb.let {
+                Glide.with(this)
+                    .load(it)
+                    .into(ivResult)
+            }
+        }
+    }
+
+    private fun openGallery() {
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        resultLauncherGallery.launch(galleryIntent)
     }
 
     private var resultLauncherGallery = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -155,10 +160,5 @@ class MainActivity : AppCompatActivity() {
                     .into(ivResult)
             }
         }
-    }
-
-    private fun openGallery() {
-        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        resultLauncherGallery.launch(galleryIntent)
     }
 }
