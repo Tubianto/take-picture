@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    var resultLauncherCamera = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var resultLauncherCamera = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
             val thumb = data!!.extras?.get("data") as Bitmap
